@@ -13,11 +13,6 @@ function istEven (a){
     else
         return console.log("This is not a number");
 }
-/*async function execute() {
-    let number = await prompt("Please enter a number: ");
-    istEven(number)
-}
-execute().finally(() => rl.close());*/
 
 /* 2. Erstelle eine Arrow-Function "isEven" (so kurz wie möglich), der ihr eine Zahl
 übergebt. Die Funktion sollte true zurückgeben, wenn die Zahl gerade ist, oder
