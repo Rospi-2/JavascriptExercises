@@ -14,6 +14,8 @@ let Laberinto = [
     ["#", "#", "#", "#", "#", " ", "#"]
 ]
 
+
+
 function printField(a) {
     for (let i = 0; i < a.length; i++) {
         console.log(a[i].join("  ")) &&
@@ -38,19 +40,27 @@ async function execute() {
         switch (direction) {
             case "u":
                 goUp(Laberinto, Spieler.r, Spieler.c, Spieler,Spieler.r, Spieler.c);
+                Laberinto[Spieler.r][Spieler.c]="S"
                 printField(Laberinto)
+                Laberinto[Spieler.r][Spieler.c]=" "
                 break;
             case "d":
                 goDown(Laberinto, Spieler.r, Spieler.c, Spieler,Spieler.r, Spieler.c);
+                Laberinto[Spieler.r][Spieler.c]="S"
                 printField(Laberinto)
+                Laberinto[Spieler.r][Spieler.c]=" "
                 break;
             case "l":
                 goLeft(Laberinto, Spieler.r, Spieler.c, Spieler,Spieler.r, Spieler.c);
+                Laberinto[Spieler.r][Spieler.c]="S"
                 printField(Laberinto)
+                Laberinto[Spieler.r][Spieler.c]=" "
                 break;
             case "r":
                 goRight(Laberinto, Spieler.r, Spieler.c, Spieler,Spieler.r, Spieler.c);
+                Laberinto[Spieler.r][Spieler.c]="S"
                 printField(Laberinto)
+                Laberinto[Spieler.r][Spieler.c]=" "
                 break;
             default:
                 console.log("Ohje! please try again");
