@@ -15,7 +15,6 @@ let Laberinto = [
 ]
 
 
-
 function printField(a) {
     for (let i = 0; i < a.length; i++) {
         console.log(a[i].join("  ")) &&
@@ -26,9 +25,8 @@ function printField(a) {
 printField(Laberinto);
 
 const Spieler = {r: 0, c:1};
-const Ziel= {r: 7, c:6};
+const Ziel= {r: 6, c:6};
 
-printField(Laberinto);
 
 
 async function execute() {
@@ -66,22 +64,12 @@ async function execute() {
                 console.log("Ohje! please try again");
                 break;
         }
-
     } while (Spieler.r !== Ziel.r && Spieler.c !== Ziel.c )
     console.log("Congratulations! You've achieved the exit, you get the present!!")
-
 }
 
 execute().finally(() => rl.close());
 
-
-function getIndex(arr, o) {
-    return indexOf(o.arr);
-}
-
-function getLaberinto() {
-    return console.log(Laberinto);
-}
 
 function goRight(arr, row, column, Spieler,r,c) {
     if (arr[row][column + 1] === " ") {
