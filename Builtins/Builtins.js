@@ -12,7 +12,10 @@ console.log("Exercise 2a: "+ getRandomInt(1,15));
 
 /*Erweitere die Funktion um einen dritten Boolean-Parameter, der angibt, ob die Funktion nur ganze Zahlen
 oder auch Kommazahlen zurückgeben darf, rundet sie gegebenenfalls auf ganze Zahlen.*/
-function getRandom(min,max){
+//********************** TO BE IMPROVED *********************
+
+/*function getRandom(min,max){
+
     return Math.random()*min *max
 }
 const z=getRandom(2,48);
@@ -21,7 +24,7 @@ console.log(z);
 function istKommazahl(numero){
     const numero = (x % 1 !== 0) =>   {true:false};
 }
-//
+ */
 
 /*3. Array Klasse: Erstelle ein Array von Zahlen (nicht sortiert!), lass es sortieren.*/
 for (var a=[],i=0;i<40;++i) 
