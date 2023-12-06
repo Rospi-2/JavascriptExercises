@@ -9,3 +9,10 @@ Für diese Übung mit der Callback-API muss beim readFile ein async vor die call
 werden, sonst wird das Programm unter Umständen zu früh beendet. Verändert sie so wie unten abgebildet, ruft aber die Funktion rl.close() in dem Moment auf, in dem
 ihr das Programm beenden möchtet (nach dem Schreiben der Datei (im callback)).
  */
+
+import { readFile } from 'node:fs';
+readFile('./data.json', 'utf8', async (err, data) => {
+});
+console.log('File read', err, data);
+// Zum Beenden des Programs `rl.close()` aufrufen
+execute().catch((err) => { console.error(err); });// .finally(() => rl.close());
