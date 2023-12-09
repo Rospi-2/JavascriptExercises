@@ -1,4 +1,5 @@
-import {readFile, writeFile} from 'node:fs';
+import {readFile, writeFile} from 'node:fs/promises';
+import {readfile} from 'node:fs';
 import readline from "readline";
 const rl = readline.createInterface({input: process.stdin, output: process.stdout});
 const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
@@ -18,9 +19,18 @@ const prod9 = {Produktnummer:"5", Bezeichnung: "San Marzano Tomaten", preis: 2.5
 const prod10 = {Produktnummer:"6", Bezeichnung: "Cherry Tomaten", preis: 15};
 
 let dataKatalog = [prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8, prod9, prod10]
-
 console.log(dataKatalog);
-
+readFile('./package.json', 'utf8')
+    .then((data) =>{
+        console.log('File read', data);
+    })
+    .catch((err) =>{
+        console.log.eror('Error reading file', err);
+    })
+    .finally(() => {
+        console.log('After read or error');
+    });
+console.log('Before file was loaded');
 let isValid;
 do {
     async function execute() {
@@ -55,12 +65,7 @@ do {
             case "x":
                 console.log("See you again!!")
                 const dataToWrite = JSON.stringify(dataKatalog);
-                readFile('./package.json', 'utf8',   (err, data) => {
-                    if (err) {
-                        console.error('Error reading file');
-                    } else {
-                        console.log('File read');}
-                });
+
                 writeFile('C:\\Users\\rosam\\Desktop\\Codersbay\\Web\\Javascript\\JavascriptExercises\\Filesystem\\FileSystem_Uebung.json', dataToWrite, 'utf8',   (err) => {
                     if (err) {
                         console.error('Error writing file');
