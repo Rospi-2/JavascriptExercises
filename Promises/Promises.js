@@ -12,11 +12,9 @@ soll sich der Balken sekündlich um ein #-Zeichen mehr füllen. Für Beispiele, 
 soll, siehe unten. Nutze die Funktion console.clear() um den vorher ausgegebenen Text immer wieder wegzulöschen.*/
 
 import {readFile, writeFile} from 'node:fs/promises';
-import readline from "readline";
+import readline from 'node:fs';
 const rl = readline.createInterface({input: process.stdin, output: process.stdout});
 const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
-
-
 
 
 const prod1 = {Produktnummer:"1", Bezeichnung: "Banane", preis: 1.79};
@@ -43,3 +41,101 @@ readFile('./package.json', 'utf8')
         console.log('After read or error');
     });
 console.log('Before file was loaded');
+
+function isNotFloat (preis){
+    if(preis % 1 !== 0){
+    return true}
+}
+
+function isValid (operation){
+    if (operation ==="a" ||operation ==="f"||operation ==="x");
+    return true
+}
+
+function addProduktnummer(NewProduktnummer, NewBezeichnung,Newpreis) {
+    return new Promise1((resolve, reject) => {
+        if (Number.isInteger(NewProduktnummer) || isNotString(Bezeichnung) ) {
+            reject('One or more values are not correct, please try it again');
+        } else {
+            let newProduct = {
+                Produktnummer: NewProduktnummer,
+                Bezeichnung: NewBezeichnung,
+                preis: Newpreis
+            }
+            resolve(dataKatalog.push(newProduct));
+            console.log(dataKatalog);
+        }
+    });
+}
+
+function FindProduktnummer(findProduktnummer) {
+    return new Promise2((resolve, reject) => {
+        if (isNotNumber(Produktnummer)) {
+            reject('Error, no valid Product number please try it again');
+        } else {
+            for (let i = 0; i < dataKatalog.length; i++) {
+                if (dataKatalog[i].Produktnummer === findProduktnummer) {
+                    console.log(dataKatalog[i]);
+                }
+            }
+            if (notFound) {
+                console.log("Product not found")
+            }
+        }
+            resolve(dataKatalog[i]);
+        });
+}
+
+function SaveProductNumber (findProduktnummer) {
+    return new Promise3((resolve, reject) => {
+        if (isNotNumber(Produktnummer)) {
+            reject('Error, no valid Product number please try it again');
+        } else {
+            for (let i = 0; i < dataKatalog.length; i++) {
+                if (dataKatalog[i].Produktnummer === findProduktnummer) {
+                    console.log(dataKatalog[i]);
+                }
+            }
+            if (isValid = false) {
+                console.log("Product not found")
+            }
+        }
+        resolve(writeFile('C:\\Users\\rosam\\Desktop\\Codersbay\\Web\\Javascript\\JavascriptExercises\\Filesystem\\FileSystem_Uebung.json', dataToWrite, 'utf8',   (err) => {
+            if (err) {
+                console.error('Error writing file');
+            } else {
+                console.log('File saved successfully!');
+            }
+        }))
+    });
+}
+
+
+async function execute() {
+do {
+
+        let myOperation = await prompt("Please enter one action:\n - for adding a new product press a\n - for finding a product press f\n - for saving and end press x\n");
+        isValid(myOperation);
+
+        switch (myOperation) {
+            case "a":
+                let askProductNumber = await prompt("Please enter a product number:");
+                let askProductName = await prompt("Please enter a product name:");
+                let askProductPreis = await prompt("Please enter a product price:");
+                    addProduktnummer(askProductNumber,askProductName,askProductPreis)
+                        break;
+            case "f":
+                let notFound = true
+                let findProductNumber = await prompt("Please enter a product number:");
+                findProductNumber(findProductNumber);
+                break;
+            case "x":
+                console.log("See you again!!")
+                const dataToWrite = JSON.stringify(dataKatalog);
+                SaveProductNumber(addProduktnummer());
+                break;
+        }
+
+
+} while (isValid)
+}execute().finally(() => rl.close());
