@@ -9,14 +9,12 @@ Für diese Übung mit der Callback-API muss beim readFile ein async vor die call
 werden, sonst wird das Programm unter Umständen zu früh beendet. Verändert sie so wie unten abgebildet, ruft aber die Funktion rl.close() in dem Moment auf, in dem
 ihr das Programm beenden möchtet (nach dem Schreiben der Datei (im callback)).
  */
-import {readFile, writeFile} from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import readline from "readline";
 const rl = readline.createInterface({input: process.stdin, output: process.stdout});
 const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
 
-
-
-
+async function execute() {
         const prod1 = {Produktnummer:"1", Bezeichnung: "Banane", preis: 1.79};
         const prod2 = {Produktnummer:"11", Bezeichnung: "Bio-Banane", preis: 2.30};
         const prod3 = {Produktnummer:"2", Bezeichnung: "Broccoli", preis: 2};
@@ -29,12 +27,13 @@ const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
         const prod10 = {Produktnummer:"6", Bezeichnung: "Cherry Tomaten", preis: 15};
 
         let dataKatalog = [prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8, prod9, prod10]
-
+        const PfadJson = './FileSystem_Uebung.json'; 
+    
         console.log(dataKatalog);
+        let newKatalog;
 
         let isValid;
         do {
-            async function execute() {
                 let myOperation = await prompt("Please enter one action:\n - for adding a new product press a\n - for finding a product press f\n - for saving and end press x\n");
             isValid = (myOperation === "a" || myOperation === "f" || myOperation === "x");
 
@@ -59,36 +58,35 @@ const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
                             notFound = false;
                         }
                     }
-                    if (notFound){
+                    if (notFound) {
                         console.log("Product not found")
                     }
                     break;
+                    
+                default:
+                    console.log("Wrong input, please try it again!")
+                    break;
+                    
                 case "x":
+                    try {
+                        const data = readFileSync(PfadJson, 'utf8');
+                        const dataObj = JSON.parse(data);
+                        dataObj.private = true;
+                        const dataToWrite = JSON.stringify(dataKatalog, null, 2);
+                        writeFileSync(PfadJson, dataToWrite, 'utf8');
+                        console.log('File saved successfully!');
+                    } catch (err) {
+                        console.error('Error processing file'+ err);
+                    }
                     console.log("See you again!!")
-                    const dataToWrite = JSON.stringify(dataKatalog);
-                    readFile('./package.json', 'utf8',   (err, data) => {
-                        if (err) {
-                            console.error('Error reading file');
-                        } else {
-                            console.log('File read');}
-                    });
-                    writeFile('C:\\Users\\rosam\\Desktop\\Codersbay\\Web\\Javascript\\JavascriptExercises\\Filesystem\\FileSystem_Uebung.json', dataToWrite, 'utf8',   (err) => {
-                        if (err) {
-                            console.error('Error writing file');
-                        } else {
-                            console.log('File saved successfully!');
-                        }
-                    });
                     isValid = false;
                     break;
+                    
             }
-            }execute().finally(() => rl.close());
 
-        } while (isValid)
-
-
-
-
+        } while (isValid);
+        
+        }execute().finally(() => rl.close());
 
 
 
