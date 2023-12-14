@@ -14,27 +14,22 @@ import readline from "readline";
 const rl = readline.createInterface({input: process.stdin, output: process.stdout});
 const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
 
+const PfadJson = './FileSystem_Uebung.json';
+
 async function execute() {
-        const prod1 = {Produktnummer:"1", Bezeichnung: "Banane", preis: 1.79};
-        const prod2 = {Produktnummer:"11", Bezeichnung: "Bio-Banane", preis: 2.30};
-        const prod3 = {Produktnummer:"2", Bezeichnung: "Broccoli", preis: 2};
-        const prod4 = {Produktnummer:"21", Bezeichnung: "Bio-Broccoli", preis: 2.5};
-        const prod5 = {Produktnummer:"3", Bezeichnung: "Gurken", preis: 0.79};
-        const prod6 = {Produktnummer:"31", Bezeichnung: "Bio-Gurken", preis: 1.25};
-        const prod7 = {Produktnummer:"4", Bezeichnung: "Roma Tomaten", preis: 1.85};
-        const prod8 = {Produktnummer:"41", Bezeichnung: "Bio-Roma Tomaten", preis: 2.5};
-        const prod9 = {Produktnummer:"5", Bezeichnung: "San Marzano Tomaten", preis: 2.5};
-        const prod10 = {Produktnummer:"6", Bezeichnung: "Cherry Tomaten", preis: 15};
-
-        let dataKatalog = [prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8, prod9, prod10]
-        const PfadJson = './FileSystem_Uebung.json'; 
+    try {
+        const data = readFileSync(PfadJson, 'utf8');
+        console.log("DEBUG MY PRODUCTS", data);
+        const dataArr = JSON.parse(data);
+        console.log(dataArr);
+    } catch (err) {
+        console.error('Error processing file'+ err);
+    }
+    console.log("File read")
     
-        console.log(dataKatalog);
-        let newKatalog;
-
         let isValid;
         do {
-                let myOperation = await prompt("Please enter one action:\n - for adding a new product press a\n - for finding a product press f\n - for saving and end press x\n");
+            let myOperation = await prompt("Please enter one action:\n - for adding a new product press a\n - for finding a product press f\n - for saving and end press x\n");
             isValid = (myOperation === "a" || myOperation === "f" || myOperation === "x");
 
             switch (myOperation) {
@@ -47,7 +42,7 @@ async function execute() {
                         Bezeichnung: askProductName,
                         preis: askProductPreis
                     }
-                    dataKatalog.push(newProduct);
+                    dataArr.push(newProduct);
                     break;
                 case "f":
                     let notFound = true
@@ -69,10 +64,8 @@ async function execute() {
                     
                 case "x":
                     try {
-                        const data = readFileSync(PfadJson, 'utf8');
-                        const dataObj = JSON.parse(data);
-                        dataObj.private = true;
-                        const dataToWrite = JSON.stringify(dataKatalog, null, 2);
+                        dataArr.private = true;
+                        const dataToWrite = JSON.stringify(dataArr, null, 2);
                         writeFileSync(PfadJson, dataToWrite, 'utf8');
                         console.log('File saved successfully!');
                     } catch (err) {
@@ -81,9 +74,8 @@ async function execute() {
                     console.log("See you again!!")
                     isValid = false;
                     break;
-                    
             }
-
+            
         } while (isValid);
         
         }execute().finally(() => rl.close());
@@ -96,10 +88,3 @@ async function execute() {
 
 
 
-
-
-
-
-
-
-//execute().catch((err) => { console.error(err); });// .finally(() => rl.close());

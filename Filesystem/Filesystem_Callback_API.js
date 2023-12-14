@@ -17,24 +17,11 @@ const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
 rl.on('close', () => process.exit(0));
 
 const PfadJson = './FileSystem_Uebung.json';
-const prod1 = {Produktnummer:"1", Bezeichnung: "Banane", preis: 1.79};
-const prod2 = {Produktnummer:"11", Bezeichnung: "Bio-Banane", preis: 2.30};
-const prod3 = {Produktnummer:"2", Bezeichnung: "Broccoli", preis: 2};
-const prod4 = {Produktnummer:"21", Bezeichnung: "Bio-Broccoli", preis: 2.5};
-const prod5 = {Produktnummer:"3", Bezeichnung: "Gurken", preis: 0.79};
-const prod6 = {Produktnummer:"31", Bezeichnung: "Bio-Gurken", preis: 1.25};
-const prod7 = {Produktnummer:"4", Bezeichnung: "Roma Tomaten", preis: 1.85};
-const prod8 = {Produktnummer:"41", Bezeichnung: "Bio-Roma Tomaten", preis: 2.5};
-const prod9 = {Produktnummer:"5", Bezeichnung: "San Marzano Tomaten", preis: 2.5};
-const prod10 = {Produktnummer:"6", Bezeichnung: "Cherry Tomaten", preis: 15};
-
-let dataKatalog = [prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8, prod9, prod10]
-
-console.log(dataKatalog);
-console.log(dataKatalog[1].Produktnummer);
-
 
 readFile(PfadJson, 'utf8', async (err, data) => {
+    console.log("DEBUG MY PRODUCTS", data);
+    const dataArr = JSON.parse(data);
+    console.log(dataArr);
     if (err) {
         console.error('Error reading file');
     } else {
@@ -54,7 +41,7 @@ readFile(PfadJson, 'utf8', async (err, data) => {
                         Bezeichnung: askProductName,
                         preis: askProductPreis
                     }
-                    dataKatalog.push(newProduct);
+                    dataArr.push(newProduct);
                     break;
                 case "f":
                     let notFound = true
@@ -79,7 +66,7 @@ readFile(PfadJson, 'utf8', async (err, data) => {
             }
         } while (isValid)
         
-            const dataToWrite = JSON.stringify(dataKatalog);
+            const dataToWrite = JSON.stringify(dataArr);
             writeFile('C:\\Users\\rosam\\Desktop\\Codersbay\\Web\\Javascript\\JavascriptExercises\\Filesystem\\FileSystem_Uebung.json', dataToWrite, 'utf8', async (err) => {
                 if (err) {
                     console.error('Error writing file');
