@@ -12,10 +12,10 @@ soll sich der Balken sekündlich um ein #-Zeichen mehr füllen. Für Beispiele, 
 soll, siehe unten. Nutze die Funktion console.clear() um den vorher ausgegebenen Text immer wieder wegzulöschen.*/
 
 import {readFile, writeFile} from 'node:fs/promises';
-import readline from 'node:fs';
+import readline from "readline";
 const rl = readline.createInterface({input: process.stdin, output: process.stdout});
 const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
-
+rl.on('close', () => process.exit(0));
 
 const prod1 = {Produktnummer:"1", Bezeichnung: "Banane", preis: 1.79};
 const prod2 = {Produktnummer:"11", Bezeichnung: "Bio-Banane", preis: 2.30};
@@ -30,31 +30,60 @@ const prod10 = {Produktnummer:"6", Bezeichnung: "Cherry Tomaten", preis: 15};
 
 let dataKatalog = [prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8, prod9, prod10]
 console.log(dataKatalog);
-readFile('./package.json', 'utf8')
+const PfadJson = './Promises.json';
+
+readFile(PfadJson, 'utf8')
     .then((data) =>{
         console.log('File read', data);
     })
     .catch((err) =>{
-        console.log.eror('Error reading file', err);
+        console.log('Error reading file', err);
     })
     .finally(() => {
         console.log('After read or error');
     });
 console.log('Before file was loaded');
+let isValid;
+let notFound;
+async function execute() {
+
+    do {
+        let myOperation = await prompt("Please enter one action:\n for adding a new product press a \n for finding a product press f \n for saving and end press x\n");
+        isValid = (myOperation === "a" || myOperation === "f" || myOperation === "x");
+        switch (myOperation) {
+            case "a":
+                let askProductNumber = await prompt("Please enter a product number:");
+                let askProductName = await prompt("Please enter a product name:");
+                let askProductPreis = await prompt("Please enter a product price:");
+                addProduktnummer(askProductNumber,askProductName,askProductPreis)
+                isValid = true;
+                break;
+            case "f":
+                let notFound = true
+                let findProductNumber = await prompt("Please enter a product number:");
+                findProductNumber(findProductNumber);
+                break;
+            case "x":
+                console.log("See you again!!")
+                const dataToWrite = JSON.stringify(dataKatalog);
+                SaveProductNumber(addProduktnummer());
+                isValid = false
+                break;
+        }
+        
+    } while (isValid)
+
+}
+execute().finally(() => rl.close());
 
 function isNotFloat (preis){
     if(preis % 1 !== 0){
     return true}
 }
 
-function isValid (operation){
-    if (operation ==="a" ||operation ==="f"||operation ==="x");
-    return true
-}
-
 function addProduktnummer(NewProduktnummer, NewBezeichnung,Newpreis) {
     return new Promise1((resolve, reject) => {
-        if (Number.isInteger(NewProduktnummer) || isNotString(Bezeichnung) ) {
+        if (Number.isInteger(NewProduktnummer) || isNotString(NewBezeichnung) ) {
             reject('One or more values are not correct, please try it again');
         } else {
             let newProduct = {
@@ -63,14 +92,13 @@ function addProduktnummer(NewProduktnummer, NewBezeichnung,Newpreis) {
                 preis: Newpreis
             }
             resolve(dataKatalog.push(newProduct));
-            console.log(dataKatalog);
         }
     });
 }
 
 function FindProduktnummer(findProduktnummer) {
     return new Promise2((resolve, reject) => {
-        if (isNotNumber(Produktnummer)) {
+        if (isNotNumber(findProduktnummer)) {
             reject('Error, no valid Product number please try it again');
         } else {
             for (let i = 0; i < dataKatalog.length; i++) {
@@ -96,11 +124,12 @@ function SaveProductNumber (findProduktnummer) {
                     console.log(dataKatalog[i]);
                 }
             }
-            if (isValid = false) {
+            if (isValid === false) {
                 console.log("Product not found")
             }
+           
         }
-        resolve(writeFile('C:\\Users\\rosam\\Desktop\\Codersbay\\Web\\Javascript\\JavascriptExercises\\Filesystem\\FileSystem_Uebung.json', dataToWrite, 'utf8',   (err) => {
+        resolve(writeFile(PfadJson, dataToWrite, 'utf8',   (err) => {
             if (err) {
                 console.error('Error writing file');
             } else {
@@ -110,32 +139,3 @@ function SaveProductNumber (findProduktnummer) {
     });
 }
 
-
-async function execute() {
-do {
-
-        let myOperation = await prompt("Please enter one action:\n - for adding a new product press a\n - for finding a product press f\n - for saving and end press x\n");
-        isValid(myOperation);
-
-        switch (myOperation) {
-            case "a":
-                let askProductNumber = await prompt("Please enter a product number:");
-                let askProductName = await prompt("Please enter a product name:");
-                let askProductPreis = await prompt("Please enter a product price:");
-                    addProduktnummer(askProductNumber,askProductName,askProductPreis)
-                        break;
-            case "f":
-                let notFound = true
-                let findProductNumber = await prompt("Please enter a product number:");
-                findProductNumber(findProductNumber);
-                break;
-            case "x":
-                console.log("See you again!!")
-                const dataToWrite = JSON.stringify(dataKatalog);
-                SaveProductNumber(addProduktnummer());
-                break;
-        }
-
-
-} while (isValid)
-}execute().finally(() => rl.close());

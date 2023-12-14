@@ -32,6 +32,7 @@ readFile('./package.json', 'utf8')
     });
 console.log('Before file was loaded');
 let isValid;
+
 do {
     async function execute() {
         let myOperation = await prompt("Please enter one action:\n - for adding a new product press a\n - for finding a product press f\n - for saving and end press x\n");
