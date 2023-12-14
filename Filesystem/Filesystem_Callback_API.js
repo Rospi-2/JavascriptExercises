@@ -66,7 +66,7 @@ readFile(PfadJson, 'utf8', async (err, data) => {
             }
         } while (isValid)
         
-            const dataToWrite = JSON.stringify(dataArr);
+            const dataToWrite = JSON.stringify(dataArr, null, 2);
             writeFile('C:\\Users\\rosam\\Desktop\\Codersbay\\Web\\Javascript\\JavascriptExercises\\Filesystem\\FileSystem_Uebung.json', dataToWrite, 'utf8', async (err) => {
                 if (err) {
                     console.error('Error writing file');

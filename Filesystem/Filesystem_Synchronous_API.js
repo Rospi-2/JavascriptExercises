@@ -17,10 +17,11 @@ const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
 const PfadJson = './FileSystem_Uebung.json';
 
 async function execute() {
+    let dataArr
     try {
         const data = readFileSync(PfadJson, 'utf8');
         console.log("DEBUG MY PRODUCTS", data);
-        const dataArr = JSON.parse(data);
+        dataArr = JSON.parse(data);
         console.log(dataArr);
     } catch (err) {
         console.error('Error processing file'+ err);
@@ -47,13 +48,10 @@ async function execute() {
                 case "f":
                     let notFound = true
                     let findProductNumber = await prompt("Please enter a product number:");
-                    for (let i = 0; i < dataKatalog.length; i++) {
-                        if (dataKatalog[i].Produktnummer === findProductNumber) {
-                            console.log(dataKatalog[i]);
-                            notFound = false;
-                        }
-                    }
-                    if (notFound) {
+                    if( dataArr.find(p => p.Produktnummer === findProductNumber)){
+                        const findProdnummer = dataArr.find(p => p.Produktnummer === findProductNumber)
+                        console.log(findProdnummer)}
+                    else if (notFound) {
                         console.log("Product not found")
                     }
                     break;
