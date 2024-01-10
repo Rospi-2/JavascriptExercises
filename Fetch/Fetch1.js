@@ -28,33 +28,33 @@ const data = readFile('./Fetch.json', 'utf8')
         console.log();
         let data1;
         let data2;
-        
+        let isValid=true;
+            
             async function execute() {
-            const location = await prompt("Please enter your location or a city: ");
-            console.log();
-            const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&format=json`;
-            console.log(url);
-            const response = await fetch(url);
-            data1 = await response.json();
-               /* Gebt eine nummerierte Liste der besten Ergebnisse aus und lasst den Nutzer durch
-                Zahleneingabe ein Ergebnis wählen, für welches er das Wetter sehen möchte. Speichert
-                den gewählten Ort in eine JSON Datei*/
-                if (data1.results.length === 0){
-                    console.log("Not results")
-                } else {
-                    console.log("DEBUG", data1);
-                    for (let i=0; i < data1.results.length; i++){
-                        const nameLocations = i + "- " + data1.results[i].name;
-                        console.log(nameLocations);
+                    const location = await prompt("Please enter your location or a city: ");
+                    console.log();
+                    const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&format=json`;
+                    console.log(url);
+                    const response = await fetch(url);
+                    data1 = await response.json();
+                    /* Gebt eine nummerierte Liste der besten Ergebnisse aus und lasst den Nutzer durch
+                     Zahleneingabe ein Ergebnis wählen, für welches er das Wetter sehen möchte. Speichert
+                     den gewählten Ort in eine JSON Datei*/
+                    if (data1.results.length === 0) {
+                        console.log("Not results")
+                    } else {
+                        console.log("DEBUG", data1);
+                        for (let i = 0; i < data1.results.length; i++) {
+                            const nameLocations = i + "- " + data1.results[i].name;
+                            console.log(nameLocations);
+                        }
+                        const weather = await prompt("Please enter a location number: ");
+                        const urlweather = `https://api.open-meteo.com/v1/forecast?latitude=${data1.results[weather].latitude}&longitude=${data1.results[weather].latitude}&daily=precipitation_sum`;
+                        const response = await fetch(urlweather);
+                        data2 = await response.json();
+                        console.log(data2);
                     }
-                    const weather = await prompt("Please enter a location number: ");
-                    const urlweather = `https://api.open-meteo.com/v1/forecast?latitude=${data1.results[weather].latitude}&longitude=${data1.results[weather].latitude}&daily=precipitation_sum`;
-                    const response = await fetch(urlweather);
-                    data2 = await response.json();
-                    console.log(data2);
-                }
-                
-        }
+            }
             execute().finally(() => rl.close());
         })
     .catch((err) => {
